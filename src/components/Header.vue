@@ -13,17 +13,17 @@
       >
         <el-menu-item><img class="logo" src="@/images/logo.png"></el-menu-item>
         <el-menu-item index="/">首页</el-menu-item>
-        <el-menu-item index="/adopt">领养</el-menu-item>
+        <el-menu-item index="/adopt" @click="openAdopt">领养</el-menu-item>
         <el-menu-item index="/create">送养</el-menu-item>
         <el-menu-item index="/article">论坛</el-menu-item>
         <el-menu-item index="/show">宠物秀</el-menu-item>
         <el-menu-item index="/register" v-if="!username" class="right" >注册</el-menu-item>
-        <el-menu-item v-else class="right" @click="open">
+        <el-menu-item v-if="username" class="right" @click="open">
           <a>退出</a>
         </el-menu-item>
         <el-menu-item index="/login" v-if="!username" class="right">登陆</el-menu-item>
 
-        <el-menu-item index="/my" v-else class="right">
+        <el-menu-item index="/my" v-if="username" class="right">
           <img class="avatar" :src="avatar" alt="avatar"/>
           {{username}}
         </el-menu-item>
@@ -57,7 +57,15 @@ export default {
     },
     getNotice() {
       const { username } = this.$store.getters.getUser
-      this.$store.dispatch('getNotice')
+      getTotalNotice(username).then(res => {
+        if (res.data.code = 1) {
+          this.count = res.data.data[0].count
+          console.log(res.data.msg)
+          return 
+        } else {
+          console.log(res.data.msg)
+        }
+      })
     },
     handleSelect(key, keyPath) {
       console.log(key, keyPath)
@@ -82,21 +90,31 @@ export default {
           message: '已取消退出'
         });          
       });
+    },
+    openAdopt() {
+      this.$message(`当前定位为${lo}${lc}`);
     }
   },
   updated: function(){
-    this.count = this.$store.state.count
+    const { username } = this.$store.getters.getUser
+    getTotalNotice(username).then(res => {
+      if (res.data.code = 1) {
+        this.count = res.data.data[0].count
+        console.log(res.data.msg)
+        return 
+      } else {
+        console.log(res.data.msg)
+      }
+    })
   },
   mounted() {
     this.initUser()
     this.getNotice()
-    this.count = this.$store.state.count
   }
 
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .container {
     width: 100%;

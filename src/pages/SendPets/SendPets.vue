@@ -4,7 +4,7 @@
 			<div class="box">
 				<div class="box-header">
 					<h1>请输入宠物的信息 信息越完整，送出率越高</h1>
-					<h2>我们提倡免费或者小偿领养送养宠物，严禁宠物买卖</h2>
+					<h2>我们提倡免费领养送养宠物，严禁宠物买卖</h2>
 				</div>
 				<div class="box-body">
 					<el-form :model="form" ref="ruleForm" label-width="100px" hide-required-asterisk :rules="rules" class="form">
@@ -19,14 +19,19 @@
 								<div class="desc-box">
 									<span class="label">
 										品种
-										<el-select v-model="form.breed" placeholder="请选择">
+										<!-- <el-select v-model="form.breed" placeholder="请选择">
 										  <el-option
 										    v-for="item in breedOptions"
 										    :key="item.breed_name"
 										    :label="item.breed_name"
 										    :value="item.breed_name">
 										  </el-option>
-										</el-select>
+										</el-select> -->
+										<el-cascader
+									    v-model="value"
+									    :options="options"
+									    @change="breedChange">
+									  </el-cascader>
 									</span>
 
 									<span class="label">
@@ -39,23 +44,6 @@
 										    :value="item.value">
 										  </el-option>
 										</el-select>
-									</span>
-								</div>
-								<div class="desc-box">
-									<span class="label">
-										免费
-										<el-select v-model="form.free" placeholder="请选择">
-										  <el-option
-										    v-for="item in freeOptions"
-										    :key="item.value"
-										    :label="item.label"
-										    :value="item.value">
-										  </el-option>
-										</el-select>
-									</span>
-									<span class="label">
-										价格
-										<el-input-number v-model="form.money" controls-position="right" :min="0" :max="10000"></el-input-number>
 									</span>
 								</div>
 								<div class="desc-box">
@@ -130,7 +118,7 @@
 <script>
 	import { regionDataPlus, CodeToText } from 'element-china-area-data'
 	import { getToken, uploadQiNiu } from '@/apis/upload'
-	import { sendPets, retrieveBreed } from '../../apis/foreground'
+	import { sendPets, retrieveBreed, findBreed } from '../../apis/foreground'
 	export default {
 		name :'SendPets',
 		data() {
@@ -154,6 +142,10 @@
       }
 
 			return {
+				value: [],
+				dogList: [],
+				catList: [],
+				options: [],
 				token: {},
 				// 七牛云的上传地址
 				domain: 'https://upload-z2.qiniup.com',
@@ -165,7 +157,6 @@
 					title: '',
 					petdesc: '',
 					age: 1,
-					money: 0,
 					quchong: false,
 					mianyi: false,
 					jueyu: false,
@@ -174,14 +165,13 @@
 					wechat: '',
 					qqnumber: '',
 					sex: 0,
-					free: 0,
 					breed: '',
+					breed_name: '',
 					province: '',
 					county: '',
 					city: '',
 					imageUrl: '',
 				},
-				breedOptions: [],
 		    sexOptions: 
 		    [{
 		    	value: 0,
@@ -230,6 +220,7 @@
 		},
 		mounted:function() {
 			this.retrievePetBreed()
+			this.findPetBreed()
 	  },
 		methods: {
 	    submitForm(formName) {
@@ -250,13 +241,20 @@
           console.log(res);
           // 后台成功返回数据
           if (res.data.code === 1) {
-            // 保存状态
-            this.$message.success(res.data.msg)
+						this.$message.success(res.data.msg)
+						// 跳转到正在审核页面
+            this.$router.push({path:`/create/success`})
             return
           }
           // 失败提示
           this.$message.error(res.data.msg)
         })
+			},
+			breedChange(value) {
+				this.form.breed = value[0]
+				if (value[1] !== '') {
+					this.form.breed_name = value[1]
+				}
 			},
       handleChange (value) {
       	this.form.province = CodeToText[value[0]]
@@ -312,12 +310,59 @@
 	        // 后台成功返回数据
 	        if (res.data.code === 1) {
 	          console.log(res.data.msg)
-	          this.breedOptions = res.data.data
+	          for (let i = 0; i < res.data.data.length; i++) {
+	          	this.options.push({
+                value: res.data.data[i].breed_name,
+                label: res.data.data[i].breed_name,
+            	});
+	          }
+	          
+	          console.log(this.breedOptions)
 	          return
 	        }
 	        // 失败提示
 	        console.log(res.data.msg)
 	      })
+	    },
+	    findPetBreed() {
+	    	findBreed("狗").then(res => {
+	        // 后台成功返回数据
+	        if (res.data.code === 1) {
+	          for( let i=0; i<res.data.data.length; i++) {
+	          	this.dogList.push({
+	          		value: res.data.data[i].breed_name,
+                label: res.data.data[i].breed_name,
+	          	})
+	          }
+	          return
+	        }
+	        // 失败提示
+	        console.log(res.data.msg)
+	      })
+	      this.options.unshift({
+          value: "狗",
+          label: "狗",
+          children: this.dogList
+        });
+        findBreed("猫").then(res => {
+	        // 后台成功返回数据
+	        if (res.data.code === 1) {
+	          for( let i=0; i<res.data.data.length; i++) {
+	          	this.catList.push({
+	          		value: res.data.data[i].breed_name,
+                label: res.data.data[i].breed_name,
+	          	})
+	          }
+	          return
+	        }
+	        // 失败提示
+	        console.log(res.data.msg)
+	      })
+	      this.options.unshift({
+          value: "猫",
+          label: "猫",
+          children: this.catList
+        });
 	    }
 	  }
 	}

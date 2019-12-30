@@ -21,7 +21,7 @@
             </div>
             <div class="contact">
                 <el-divider content-position="left">联系方式</el-divider>
-                <div class="contact-mode">
+                <div v-if="login" class="contact-mode">
                     <div class="padding">
                         <i class="iconfont icon-phone">&#xe7bf;</i>
                         电话号码:
@@ -37,9 +37,11 @@
                         QQ:
                         <span class="item">{{contentList.qqnumber}}</span>
                     </div>
+                    <div class="money">如有金钱交易请谨慎处理，谨防诈骗。</div>
                 </div>
+                <div v-else class="contact-unlogin">请登陆后查看</div>
             </div>
-            <div class="money">如有金钱交易请谨慎处理，谨防诈骗。</div>
+            
         </div>
     </div>
 </template>
@@ -52,18 +54,15 @@
         },
         data() {
             return {
-                // contentList: {
-                //     desc: "朋友的猫，两岁半了，驱虫疫苗8月19都以做过，英短银渐层重点色，和银渐层区别是背毛黑色很短，看起来更加白，蓝色大眼睛，朋友要出国照看不了，真正爱猫的铲屎官可以联系",
-                //     contact: {
-                //         telephone: "13665962554",
-                //         wechat: "13665962554",
-                //         qqnumber: "847885262"
-                //     },
-                //     imgUrl: [
-                //         require("@/images/adopt1.jpg"),
-                //         require("@/images/adopt2.jpg")
-                //     ]
-                // }
+                login: false
+            }
+        },
+        mounted: function() {
+            const { username } = this.$store.getters.getUser
+            if (username) {
+                this.login = true
+            } else {
+                this.login = false
             }
         }
     }
@@ -120,10 +119,17 @@
         font-size: 20px;
     }
     .content-container .money {
-        padding-left: 53px;
+        padding-left: 10px;
         color: red;
         font-size: 12px;
         padding-bottom: 20px;
+    }
+
+    .contact-unlogin {
+        padding-left: 53px;
+        padding-bottom: 20px;
+        color: red;
+        font-size: 14px;
     }
     
 </style>

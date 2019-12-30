@@ -91,11 +91,11 @@
 	 			const content = this.qiniuForm.content
 	 			const { form } = this
 	 			await sendArticle({...form, content, username}).then(res => {
-          this.$router.push({path:`/article/${res.data.data.insertId}`})
           // 后台成功返回数据
           if (res.data.code === 1) {
-            // 保存状态
             this.$message.success(res.data.msg)
+            // 跳转到发布成功的文章详情页
+            this.$router.push({path:`/article/${res.data.data.insertId}`})
             return
           }
           // 失败提示

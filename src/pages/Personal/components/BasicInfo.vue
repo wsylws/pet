@@ -57,4 +57,7 @@
     padding-left: 40px;
     padding-bottom: 40px;
 	}
+	.el-avatar>img {
+    width: 100%;
+  }
 </style>

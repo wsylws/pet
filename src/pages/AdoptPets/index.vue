@@ -20,6 +20,9 @@
 			AdoptArticle,
 		},
 		data() {
+			const pv = sessionStorage.getItem("province")
+	  	const ci = sessionStorage.getItem("city")
+	  	const ct = sessionStorage.getItem("county")
 			return {
 				breedList: [],
 				AdoptList: [],
@@ -27,10 +30,11 @@
 				pageSize: 10,
 				pageTotal: 0,
 				searchInfo: '',
-				province: '',
-				city: '',
-				county: '',
-				breed: ''
+				province: pv,
+				city: ci,
+				county: ct,
+				breed: '',
+				breedName: ''
 			}
 		},
 		mounted: function() {
@@ -50,9 +54,10 @@
 	      })
 	    },
 	    retrievePetArticleInfo() {
-	    	const { pageNum, pageSize, province, city, county, breed } = this
+	    	const { pageNum, pageSize, province, city, county, breed, breedName } = this
 	    	
-	    	retrievePetInfo(pageNum, pageSize, province, city, county, breed).then(res => {
+		  	console.log(this.province,this.city);
+	    	retrievePetInfo(pageNum, pageSize, province, city, county, breed, breedName).then(res => {
 	        // 后台成功返回数据
 	        if (res.data.code === 1) {
 	          this.AdoptList = res.data.data.result
@@ -75,6 +80,7 @@
 	    	this.city = this.searchInfo.city
 	    	this.county = this.searchInfo.county
 	    	this.breed = this.searchInfo.breed
+	    	this.breedName = this.searchInfo.breedName
 	    	this.pageNum = 1
 	    }
 		}

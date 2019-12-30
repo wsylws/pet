@@ -29,7 +29,7 @@
 	          :src="item"
 	          :key="item.id"
 		        fit="cover"
-	          :preview-src-list="img"
+	          :preview-src-list="(contentList.imgurl || '').split(',')"
 	         >
 	         </el-image>
 		  	</div>

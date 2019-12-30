@@ -60,14 +60,17 @@
 		methods: {
 			submit() {
         if ( this.form.textarea !== '') {
+					// 文本框不为空
           const { form } = this
           const { username } = this.$store.getters.getUser
           sendPetShow({...form, username: username}).then(res => {
             if (res.data.code === 1) {
+							// 后台成功返回数据
               this.$message.success(res.data.msg)
               this.$parent.getPetShow()
               this.form.textarea = ''
-              this.form.imgUrl = ''
+							this.form.imgUrl = ''
+							// 清除所有图片
               this.$refs.upload.clearFiles()
               return
             } else 

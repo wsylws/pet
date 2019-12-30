@@ -31,7 +31,7 @@
 		  <el-container>
 		    <el-aside class="aside-left" width="100px">邮箱</el-aside>
 		    <el-main>
-		    	<el-input v-model="info.email" placeholder="请输入更改的邮箱"></el-input>
+		    	<el-input v-model="info.email" placeholder="请输入更改的邮箱" :disabled="true"></el-input>
 				</el-main>
 		  </el-container>
 			<el-container>
@@ -69,12 +69,14 @@
 			this.getInfo()
 		},
     methods: {
+			// 修改信息
     	Update() {
     		const { info } = this
     		updatePersonal(info).then(res => {
     			if (res.data.code === 1) {
-            this.$message.success(res.data.msg)
-            this.$store.dispatch('saveUser', info)
+						this.$message.success(res.data.msg)
+						// 保存修改后的用户信息到vuex
+						this.$store.dispatch('saveUser', info)
             this.$router.go(0)
             return
           } else 

@@ -109,6 +109,7 @@
     font-size: 12px;
     line-height: 28px;
     overflow: hidden;
+    width: 240px;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 1;
@@ -117,6 +118,7 @@
   .lastest-desc {
     font-size: 12px;
     margin-top: 10px;
+    height: 60px;
     overflow: hidden;
     color: #666;
     text-overflow: ellipsis;

@@ -10,7 +10,9 @@ const state = {
   email: '',
   phone: 0,
   avatar: '',
-  count: 0
+  count: 0,
+  province: '',
+  city: ''
 }
 // 相当于一个computed 通过this.$store.getters.函数名 获得返回的结果
 const getters = {
@@ -20,6 +22,9 @@ const getters = {
     if (tempStorage) {
       [state.username, state.email, state.phone, state.avatar] = [tempStorage.username, tempStorage.email, tempStorage.phone, tempStorage.avatar]
     }
+    return state
+  },
+  getCity: state => {
     return state
   }
 }
@@ -45,7 +50,7 @@ const mutations = {
   },
   getNotice: (state) => {
     getTotalNotice(state.username).then(res => {
-      if (res.data.code=1) {
+      if (res.data.code = 1) {
         state.count = res.data.data[0].count
         console.log(res.data.msg)
         return 
@@ -53,6 +58,10 @@ const mutations = {
         console.log(res.data.msg)
       }
     }) 
+  },
+  saveCity: (state) => {
+    state.province = lo
+    state.city = lc
   }
 }
 // 异步事务 Action 提交的是 mutation，而不是直接变更状态。
@@ -67,6 +76,9 @@ const actions = {
   },
   getNotice: (context) => {
     context.commit('getNotice')
+  },
+  saveCity: (context) => {
+    context.commit('saveCity')
   }
 }
 

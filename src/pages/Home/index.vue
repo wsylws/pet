@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<home-swiper></home-swiper>
+		<home-swiper :SwiperList="SwiperList"></home-swiper>
 		<home-adopt :AdoptList="AdoptList"></home-adopt>
 		<lastest-articles :LastestList="LastestList"></lastest-articles>
 		<hot-articles :HotList="HotList" ></hot-articles>
@@ -8,7 +8,7 @@
 </template>
 
 <script>
-	import { retrievePetInfo,getLastestArticle,getHotArticle  } from '@/apis/foreground'
+	import { retrievePetInfo,getLastestArticle,getHotArticle,getSwiperImg  } from '@/apis/foreground'
 	import HomeSwiper from './components/Swiper'
 	import HomeAdopt from './components/HomeAdopt'
 	import LastestArticles from './components/LastestArticles'
@@ -25,18 +25,20 @@
 			return {
 				AdoptList: [],
 				LastestList: [],
-				HotList: []
+				HotList: [],
+				SwiperList: []
 			}
 		},
 		mounted: function() {
 			this.retrievePetArticleInfo()
 			this.getLastest()
 			this.getHot()
+			this.getSwiper()
 		},
 		methods: {
 			retrievePetArticleInfo() {
-	    	const pageNum = 1, pageSize = 10, province = '', city = '', county = '', breed = ''
-	    	retrievePetInfo(pageNum, pageSize, province, city, county, breed).then(res => {
+	    	const pageNum = 1, pageSize = 10, province = '', city = '', county = '', breed = '', breed_name = ''
+	    	retrievePetInfo(pageNum, pageSize, province, city, county, breed, breed_name).then(res => {
 	        // 后台成功返回数据
 	        if (res.data.code === 1) {
 	          this.AdoptList = res.data.data.result
@@ -60,6 +62,15 @@
 	    	getHotArticle().then(res => {
 	    		if (res.data.code === 1) {
 	    			this.HotList = res.data.data
+	    			return 
+	    		}
+	    		console.log(res.data.msg)
+	    	})
+	    },
+	    getSwiper() {
+	    	getSwiperImg().then(res => {
+	    		if (res.data.code === 1) {
+	    			this.SwiperList = res.data.data
 	    			return 
 	    		}
 	    		console.log(res.data.msg)

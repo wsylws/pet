@@ -32,16 +32,14 @@
 		name: "ArticleDetailContent",
 		data() {
 			return {
-				
 			}
-			
 		},
 		props: {
 			contentList: '',
 			changcontent: Number
 		},
 		mounted: function(){
-			// console.log(this.changcontent)
+			
 		}
 	}
 </script>

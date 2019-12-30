@@ -13,19 +13,27 @@
                 <div class="info-bottom">
                     <span class="item">
                         品种:
-                        <strong>{{infoList.breed}}</strong>
+                        <strong>{{infoList.breed}}<span v-if="infoList.breed_name">/{{infoList.breed_name}}</span></strong>
                     </span>
                     <span class="item">
                         性别:
                         <strong>{{infoList.sex === 1 ? "公" : "母"}}</strong>
                     </span>
                     <span class="item">
-                        免费:
-                        <strong>{{infoList.free? "是" : "否"}}</strong>
+                        年龄:
+                        <strong>{{infoList.age}}岁</strong>
                     </span>
                     <span class="item">
-                        金额:
-                        <strong>￥{{infoList.money}}</strong>
+                        驱虫:
+                        <strong>{{ infoList.quchong == "true" ? "是" : "否"}}</strong>
+                    </span>
+                    <span class="item">
+                        免疫:
+                        <strong>{{ infoList.mianyi == 'true' ? "是" : "否"}}</strong>
+                    </span>
+                    <span class="item">
+                        绝育:
+                        <strong>{{ infoList.jueyu == 'true' ? "是" : "否"}}</strong>
                     </span>
                 </div>
 			</div>
@@ -38,6 +46,9 @@ export default {
     name: 'DetailInfo',
     props: {
         infoList: ''
+    },
+    mounted: function(){
+        console.log(this.infoList)
     },
     data() {
     	return {

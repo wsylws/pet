@@ -26,7 +26,7 @@
             placeholder="请输入内容"
             v-model="form.textarea">
           </el-input>
-          <el-button @click="sendComment" class="button"type="primary">发表</el-button>
+          <el-button @click="sendComment" class="button" type="primary">发表</el-button>
         </div>
     </div>
 </template>
@@ -49,33 +49,40 @@
         }
       },
       methods: {
+        // 发表评论
         sendComment() {
+          // 获取当前登录用户的用户名
           const { username } = this.$store.getters.getUser
           if (username) {
+            // 已登录
             if ( this.form.textarea) {
               const petid = this.$route.params.id
-              
               const { form } = this
               console.log(form)
+              // 发送到后台
               sendPetComment({...form, username: username, petid: petid}).then(res => {
+                // 后台成功返回数据
                 if (res.data.code === 1) {
                   this.$message.success(res.data.msg)
+                  // 获取评论
                   this.$parent.getComment()
                   this.form.textarea = ''
                   return
                 } else 
                 this.$message.error(res.data.msg)
               })
-              console.log(this.author)
-              addNotice({content:this.form.textarea, username: username, comment_id: petid, category: 'pet', author: this.author}).then (res => {
-                  console.log(res.data.msg)
-                  return
-              })
-
+              if (username !== this.author) {
+                // 将当前评论信息添加到提醒表
+                addNotice({content:this.form.textarea, username: username, comment_id: petid, category: 'pet', author: this.author}).then (res => {
+                    console.log(res.data.msg)
+                    return
+                })
+              }
               return 
             }
             this.$message.error("评论不能为空")
           } else {
+            // 未登录
             this.$alert('您还未登录，请登录后评论', '提示', {
               confirmButtonText: '登录',
               callback: action => {

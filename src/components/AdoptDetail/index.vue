@@ -41,8 +41,8 @@ export default {
                 // 后台成功返回数据
                 if (res.data.code === 1) {
                     console.log(res.data.msg)
-                    const { id, title, pet_desc, status, breed, sex, free, age, money, quchong, mianyi, jueyu, contactname, telephone, wechat, qqnumber, imgurl, read_num, comment_num, like_num, collect_num, province, city, county } = res.data.data[0]
-                    this.infoList = { id, title, breed, sex, free, money, province, city, county, status }
+                    const { id, title, pet_desc, status, breed, breed_name, sex, age, quchong, mianyi, jueyu, contactname, telephone, wechat, qqnumber, imgurl, read_num, comment_num, like_num, collect_num, province, city, county } = res.data.data[0]
+                    this.infoList = { id, title, breed, breed_name, sex, age, province, city, county, status, quchong, mianyi, jueyu }
                     this.dateList = { read_num, comment_num, like_num, collect_num }
                     this.contentList = { imgurl, pet_desc, telephone, wechat, qqnumber }
                     this.author = res.data.data[0].username

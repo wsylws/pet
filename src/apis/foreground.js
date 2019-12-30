@@ -16,6 +16,47 @@ export const register = (data) => {
   })
 }
 
+export const userIsExist = (username) => {
+  return axios({
+    url: `${baseUrl}/user/user-exist`,
+    method: 'post',
+    data: {username: username}
+  })
+}
+
+export const emailIsExist = (email) => {
+  return axios({
+    url: `${baseUrl}/user/email-exist`,
+    method: 'post',
+    data: {email: email}
+  })
+}
+
+// 发送验证码
+export const sendCode = (data) => {
+  return axios({
+    url: `${baseUrl}/user/sendcode`,
+    method: 'post',
+    data
+  })
+}
+
+export const checkEmailcode = (data) => {
+  return axios({
+    url: `${baseUrl}/user/check-emailcode`,
+    method: 'post',
+    data
+  })
+}
+
+export const updatePassword = (data) => {
+  return axios({
+    url: `${baseUrl}/user/update-password`,
+    method: 'post',
+    data
+  })
+}
+
 // 登陆
 export const login = (data) => {
   return axios({
@@ -43,10 +84,17 @@ export const retrieveBreed = (data) => {
   })
 }
 
-// 获取领养文章的信息
-export const retrievePetInfo = (pageNum, pageSize, province, city, county, breed) => {
+export const findBreed = (category) => {
   return axios({
-    url: `${baseUrl}/pet/petarticle?pageNum=${pageNum}&pageSize=${pageSize}&province=${province}&city=${city}&county=${county}&breed=${breed}`,
+    url: `${baseUrl}/pet/findbreed?category=${category}`,
+    method: 'get'
+  })
+}
+
+// 获取领养文章的信息
+export const retrievePetInfo = (pageNum, pageSize, province, city, county, breed, breedName) => {
+  return axios({
+    url: `${baseUrl}/pet/petarticle?pageNum=${pageNum}&pageSize=${pageSize}&province=${province}&city=${city}&county=${county}&breed=${breed}&breedName=${breedName}`,
     method: 'get'
   })
 }
@@ -107,6 +155,14 @@ export const petUnLikeNum = (data) => {
 export const getLikeNum = (id) => {
   return axios({
     url: `${baseUrl}/pet/getlike/${id}`,
+    method: 'get'
+  })
+}
+
+// 获取轮播图
+export const getSwiperImg = () => {
+  return axios({
+    url: `${baseUrl}/pet/getswiper`,
     method: 'get'
   })
 }

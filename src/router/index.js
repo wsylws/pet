@@ -3,7 +3,10 @@ import Router from 'vue-router'
 import Index from '@/pages/Home'
 import Register from '@/pages/Register'
 import Login from '@/pages/Login'
+import ForgetPassword from '@/pages/ForgetPassword'
+import UpdatePassword from '@/pages/UpdatePassword'
 import SendPets from '@/pages/SendPets/SendPets'
+import SendSuccess from '@/pages/SendPets/check'
 import AdoptPets from '@/pages/AdoptPets'
 import PetShow from '@/pages/PetShow'
 import BBS from '@/pages/BBS'
@@ -43,9 +46,33 @@ export default new Router({
 			}
 		},
 		{
+			path: '/forgetpsw',
+			name: 'ForgetPassword',
+			component: ForgetPassword,
+			meta: {
+				module: '/login'
+			}
+		},
+		{
+			path: '/forgetpsw/:email',
+			name: 'UpdatePassword',
+			component: UpdatePassword,
+			meta: {
+				module: '/login'
+			}
+		},
+		{
 			path: '/create',
 			name: 'SendPets',
 			component: SendPets,
+			meta: {
+				module: '/create'
+			}
+		},
+		{
+			path: '/create/success',
+			name: 'SendSuccess',
+			component: SendSuccess,
 			meta: {
 				module: '/create'
 			}

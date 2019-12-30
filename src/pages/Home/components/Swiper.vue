@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <el-carousel :interval="4000" type="card" height="300px" width="970px">
-      <el-carousel-item v-for="item in swiperList" :key="item.id">
+      <el-carousel-item v-for="item in SwiperList" :key="item.id">
         <img class="swiper-image" :src="item.imgUrl" />
       </el-carousel-item>
     </el-carousel>
@@ -11,22 +11,25 @@
 <script>
   export default {
     name: 'HomeSwiper',
+    props: {
+      SwiperList: Array
+    },
     data() {
       return {
         // 在data中使用别名要加require
-        swiperList: [{
-          id: '0001',
-          imgUrl: require('@/images/swiper1.jpg')
-        }, {
-          id: '0002',
-          imgUrl: require('@/images/swiper2.jpg')
-        }, {
-          id: '0003',
-          imgUrl: require('@/images/swiper3.jpg')
-        }, {
-          id: '0004',
-          imgUrl: require('@/images/swiper4.jpg')
-        },]
+        // swiperList: [{
+        //   id: '0001',
+        //   imgUrl: require('@/images/swiper1.jpg')
+        // }, {
+        //   id: '0002',
+        //   imgUrl: require('@/images/swiper2.jpg')
+        // }, {
+        //   id: '0003',
+        //   imgUrl: require('@/images/swiper3.jpg')
+        // }, {
+        //   id: '0004',
+        //   imgUrl: require('@/images/swiper4.jpg')
+        // },]
       }
     }
   }

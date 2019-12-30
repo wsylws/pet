@@ -5,10 +5,10 @@
 					  <el-tab-pane :label="'领养文章' + (petUnread == 0 ? '' : '(' + petUnread +')') " name='pet'>
 					  	<adopt-article :adoptList="adoptList"></adopt-article>
 						</el-tab-pane>
-					  <el-tab-pane :label="'论坛文章' + (bbsUnread == 0 ? '' : '(' + petUnread +')')" name='bbs'>
+					  <el-tab-pane :label="'论坛文章' + (bbsUnread == 0 ? '' : '(' + bbsUnread +')')" name='bbs'>
 					  	<bbs-article :bbsList="bbsList"></bbs-article>
 					  </el-tab-pane>
-					  <el-tab-pane :label="'宠物秀' + (showUnread == 0 ? '' : '(' + petUnread +')')" name='show'>
+					  <el-tab-pane :label="'宠物秀' + (showUnread == 0 ? '' : '(' + showUnread +')')" name='show'>
 					  	<pet-show :showList="showList"></pet-show>
 					  </el-tab-pane>
 					</el-tabs>
@@ -58,18 +58,20 @@
 			},
 			getNotice() {
 				const { username } = this.$store.getters.getUser
-				getNoticeInfo(username).then(res => {
-					if (res.data.code === 1) {
-						this.adoptList = res.data.data.result1
-						this.bbsList = res.data.data.result2
-						this.showList = res.data.data.result3
-						this.petUnread = res.data.data.result4[0].petcount
-						this.bbsUnread = res.data.data.result5[0].bbscount
-						this.showUnread = res.data.data.result6[0].showcount
-            return
-          } else 
-          console.log(res.data.msg)
-				})
+				if (username) {
+					getNoticeInfo(username).then(res => {
+						if (res.data.code === 1) {
+							this.adoptList = res.data.data.result1
+							this.bbsList = res.data.data.result2
+							this.showList = res.data.data.result3
+							this.petUnread = res.data.data.result4[0].petcount
+							this.bbsUnread = res.data.data.result5[0].bbscount
+							this.showUnread = res.data.data.result6[0].showcount
+	            return
+	          } else 
+	          console.log(res.data.msg)
+					})
+				}
 			},
 			updateNotice() {
 				const { username } = this.$store.getters.getUser

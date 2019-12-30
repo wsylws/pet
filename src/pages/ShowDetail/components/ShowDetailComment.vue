@@ -56,11 +56,12 @@
                 } else 
                 this.$message.error(res.data.msg)
               })
-              addNotice({content:this.form.textarea, username: username, comment_id: showid, category: 'show', author: this.author}).then (res => {
+              if (username !== this.author) {
+                addNotice({content:this.form.textarea, username: username, comment_id: showid, category: 'show', author: this.author}).then (res => {
                   console.log(res.data.msg)
                   return
-              })
-
+                })
+              }
               return 
             }
             this.$message.error("评论不能为空")

@@ -8,7 +8,7 @@
 			  <div class="card-body">
 				  <div v-for="item in AdoptList" :key="item.id" class="text item">
 				    <router-link tag="a" :to="'/adopt/' + item.id" @click.native="readNum(item.id)" class="adopt-left">
-				    	<img :src="item.imgurl.split(',', 1)">
+				    	<el-image style="width: 350px; height: 200px" :src="item.imgurl.split(',', 1).toString()" fit="cover"/>
 				    </router-link>
 				    <div class="adopt-right">
 				    	<h2 class="title">

@@ -5,17 +5,28 @@
 		    <div class="title">宠物萌语</div>
 		    <p class="desc">愿世间动物不再流浪</p>
 		  </div>
-		  <el-form ref="form" :rules="rules" :model="user">
+		  <el-form ref="form" :rules="rules" :model="user" label-width="80px" hide-required-asterisk>
 				<el-form-item label="用户名" prop="username">
-          <el-input v-model="user.username"></el-input>
+          <el-input v-model="user.username" placeholder="请输入用户名"></el-input>
         </el-form-item>
-	      <el-form-item label="密码" prop="pwd">
-          <el-input type="password" v-model="user.pwd"></el-input>
+        <el-form-item label="密码" prop="password">
+          <el-input v-model="user.pwd" type="password" placeholder="请输入密码"></el-input>
+        </el-form-item>
+        <el-form-item label="验证码" prop="imageCode">
+          <el-col :span="13">
+            <el-input v-model="user.imageCode" placeholder="请输入验证码"></el-input>
+          </el-col>
+          <el-col :span="11">
+            <validate-code class="code" ref="validate-code" @change="code => user.validateCode = code"></validate-code>
+          </el-col>
         </el-form-item>
 			</el-form>
 			<div class="oparator">
-          <el-button class="submit" type="primary" @click="submitForm('form')">登陆</el-button>
-        </div>
+        <el-button class="submit" type="primary" @click="submitForm('form')">登陆</el-button>
+      </div>
+      <router-link to="/forgetpsw" tag="div" class="forget">
+        <a>忘记密码？</a>
+      </router-link>
 		</el-card>
 
 	</div>
@@ -24,22 +35,38 @@
 
 <script>
   import { login } from '@/apis/foreground'
+  import ValidateCode from '@/components/ValidateCode'
 	export default {
 		name: 'Login',
+    components: { 
+      ValidateCode
+    },
 		data() {
+      const validate = (rule, value, callback) => {
+        if (value.toUpperCase() !== this.user.validateCode) {
+          callback(new Error('验证码输入错误，请重新输入'))
+        }
+        callback()
+      }
+
       return {
         labelPosition: 'top',
         user: {
           username: '',
-          pwd: ''
+          pwd: '',
+          imageCode: '',
+          validateCode: '',
         },
         rules: {
           username: [
-            { require: true, message: '请输入用户名', trigger: 'blur' },
-            { min: 3, max: 7, message: '长度在3到7个字符之间', trigger: 'blur' }
+            { require: true, message: '请输入用户名', trigger: 'blur' }
           ],
           pwd: [
             { require: true, message: '必须填写', trigger: 'blur' }
+          ],
+          imageCode: [
+            { required: true, message: '请输入验证码', trigger: 'blur'},
+            { validator: validate, trigger: 'blur' }
           ]
         }
       } 
@@ -57,9 +84,10 @@
       },
       async login() {
         // 获取表单数据
-        const { user } = this
+        const { username, pwd } = this.user
+        console.log(this.user)
         // 发送到后台
-        await login(user).then(res => {
+        await login({username: username, pwd: pwd}).then(res => {
           console.log(res);
           // 后台成功返回数据
           if (res.data.code === 1) {
@@ -86,10 +114,11 @@
 		background-repeat: no-repeat;
 		background-position: top center;
 		padding-top: 70px;
+
 	}
 	.text {
     font-size: 14px;
-  	}
+  }
 
 	.item {
 	  margin-bottom: 18px;
@@ -114,11 +143,35 @@
 	}
 
 	.box-card {
-	  margin-left: 66.66666667%;
-	  width: 25%;
+	  margin-left: 60%;
+    margin-right: 20px;
+    padding-bottom: 20px;
 	}
 	.oparator {
     margin-top: 30px;
     text-align: center;
   }
+  .code{
+    /* padding-left: 20px; */
+    cursor: pointer;
+  }
+  .forget a{
+    color: rgb(46, 130, 255);
+    margin-left: 20px;
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 12px;
+  }
+  .el-form-item {
+    margin-bottom: 10px!important;
+    padding-bottom: 10px;
+    border-bottom: 0px;
+	}
+</style>
+
+<style>
+  .el-card__body {
+    padding-bottom: 0px;
+  }
+
 </style>

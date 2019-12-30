@@ -64,10 +64,13 @@
 	            } else 
 	            this.$message.error(res.data.msg)
 						})
-						addNotice({content:this.qiniuForm.content, username: username, comment_id: articleId, category: 'bbs',author: this.author}).then (res => {
+						console.log(username, this.author);
+						if (username !== this.author) {
+							addNotice({content:this.qiniuForm.content, username: username, comment_id: articleId, category: 'bbs',author: this.author}).then (res => {
                 console.log(res.data.msg)
                 return
-            })
+            	})
+						}
 					} else {
 						this.$message.error("回复不能为空")
 					}
